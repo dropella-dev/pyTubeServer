@@ -18,7 +18,9 @@ download_status = {}
 DOWNLOAD_BUCKET_NAME = os.getenv("DOWNLOAD_BUCKET_NAME")
 def download_and_upload(video_url, filename, filepath, bucket_name):
     try:
+        print('Downloading video,',video_url)
         yt = YouTube(video_url,'WEB')
+        print(yt)
         audio_stream = yt.streams.filter(only_audio=True).first()
         audio_stream.download(output_path=DOWNLOAD_FOLDER, filename=filename)
         upload_to_b2(filepath, filename, bucket_name)
@@ -27,6 +29,7 @@ def download_and_upload(video_url, filename, filepath, bucket_name):
 
 def download_audio(video_url, vid_id):
     try:
+        print('Downloading video,',video_url)
         yt = YouTube(video_url)
         audio_stream = yt.streams.filter(only_audio=True).first()
         filename = f"{vid_id}.mp4"
@@ -57,7 +60,7 @@ def download():
             return jsonify({"status": "complete", "vidId": vid_id})
 
         if vid_id not in download_status or "error" in download_status[vid_id]:
-            download_status[vid_id] = "downloading"
+            # download_status[vid_id] = "downloading"
             thread = threading.Thread(target=download_and_upload, args=(video_url, filename, filepath, os.getenv("DOWNLOAD_BUCKET_NAME")))
             thread.start()
 

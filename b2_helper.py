@@ -18,6 +18,7 @@ def init_b2():
 
 # Upload a file
 def upload_to_b2(file_path, file_name, bucket_name):
+    print('UPloading to b2')
     b2_api = init_b2()
     bucket = b2_api.get_bucket_by_name(bucket_name)
 
