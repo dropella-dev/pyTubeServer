@@ -18,7 +18,7 @@ download_status = {}
 DOWNLOAD_BUCKET_NAME = os.getenv("DOWNLOAD_BUCKET_NAME")
 def download_and_upload(video_url, filename, filepath, bucket_name):
     try:
-        yt = YouTube(video_url)
+        yt = YouTube(video_url,'WEB')
         audio_stream = yt.streams.filter(only_audio=True).first()
         audio_stream.download(output_path=DOWNLOAD_FOLDER, filename=filename)
         upload_to_b2(filepath, filename, bucket_name)
